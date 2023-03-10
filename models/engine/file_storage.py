@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
+import sys
+sys.path.append('C:/Users/kshed/OneDrive/Desktop/programming/AirBnB_clone')
 import json
+from models.base_model import BaseModel
 
 class FileStorage():
     """cla
@@ -7,9 +10,8 @@ class FileStorage():
     Returns:
         _type_: _description_
     """
-    
-    __file_path = None
-    __object = {}
+    __file_path = "file.json"
+    __objects = {}
     
     def __init__(self) -> None:
         pass
@@ -20,7 +22,7 @@ class FileStorage():
         Returns:
             _type_: _description_
         """
-        return self.__object
+        return self.__objects
     
     def new(self, obj):
         """_summary_
@@ -28,28 +30,31 @@ class FileStorage():
         Args:
             obj (_type_): _description_
         """
-        self.__object = str(obj.__class__.__name__) + str(obj.__class__.id)
-        print(self.__object)
+        ocname = obj.__class__.__name__
+        self.__objects["{}.{}".format(obj.__class__.__name__, obj.id)] = obj
+
         
     def save(self):
         """_summary_
         """
-        filename = str(self.__object)
-        # with open("")
-        saved = json.dumps(self.__object)
-        
-        
-    
+        odict = self.__objects
+        objdict = {obj:odict[obj].to_dict() for obj in odict.keys()}
+        with open(self.__file_path, "w") as file:
+            json.dump(objdict,file)
+            
+            
     def reload(self):
         """_summary_
 
         Returns:
             _type_: _description_
         """
-        if (self.__file_path):
-            reloaded_file = json.loads(self.__file_path)
-            return reloaded_file
-        else:
-            pass
+        try:
+            with open(self.__file_path, encoding="utf-8") as f:
+                for obj in json.load(f).values():
+                    self.new(eval(obj["__class__"])(**obj))
+        except FileNotFoundError:
+            return        
         
         
+
