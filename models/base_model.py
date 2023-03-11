@@ -19,13 +19,11 @@ class BaseModel():
         
         if (kwargs):
             for key, value in kwargs.items():
+                tform = "%Y-%m-%dT%H:%M:%S.%f"
                 if key == "__class__":
                     continue
-                elif key == "created_at":
-                    setattr(self, key, dt.datetime.fromisoformat(value))
-                    continue
-                elif key == "updated_at":
-                    setattr(self, key, dt.datetime.fromisoformat(value))
+                elif key == "created_at" or key == "updated_at":
+                    setattr(self, key, dt.datetime.strptime(value, tform))
                     continue
                 setattr(self, key, value)
         else:
