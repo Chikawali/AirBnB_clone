@@ -9,7 +9,6 @@ sys.path.append('C:/Users/kshed/OneDrive/Desktop/programming/AirBnB_clone')
 
 class BaseModel():
     """Represents the BaseModel of the HBnB project."""
-    
     id = None
     created_at = None
     updated_at = None
