@@ -12,11 +12,11 @@ classes = ['BaseModel']
 def parse(arg):
     curly_braces = re.search(r"\{(.*?)\}", arg)
     square_bracket = re.search(r"\[(.*?)\]", arg)
-    
+
     if curly_braces is None:
         if square_bracket is None:
             return [i.strip(",") for i in split(arg)]
-        
+
         else:
             line = [i.strip(",") for i in split(arg[:square_bracket.span()[0]])]
             line.append(square_bracket.group())
@@ -27,14 +27,14 @@ def parse(arg):
         return(line)
 
 
-    
- 
+
+
 def check_args(args):
     l = parse(args)
     if len(l) == 0:
         print ('** class name missing **')
         return False
-    try:    
+    try:
         if l[0] not in classes:
             print("** class doesnt exist **")
             return False
@@ -49,13 +49,13 @@ class HBNBCommand(cmd.Cmd):
         cmd (_type_): _description_
     """
     prompt = "(HBNB) "
-    
+
     def default(self, line: str):
         action_map = {
             "create": self.do_create
-        } 
+        }
         match = re.search(r"\.", line)
-        
+
         if match:
             arg = [arg[:match.span()[0]],arg[:match.span()[1]]]
             match = re.search(r"\((.*?)\)", arg)
@@ -63,19 +63,19 @@ class HBNBCommand(cmd.Cmd):
                 command = [arg[1][:match.span()[0]], match.group()[1:-1]]
                 call = "{} {}".format(arg[0], command[1])
                 return action_map[command[0]](call)
-            
+
         print("*** Unknown syntax: {}".format(line))
         return False
-    
-    
+
+
     def do_create(self, line):
-        
+
         args = parse(line)
-        
+
         if args:
             print(eval(args[0])().id)
             storage.save()
-    
+
     def do_show(self, line):
         arg = check_args(line)
         if arg:
@@ -84,9 +84,9 @@ class HBNBCommand(cmd.Cmd):
             for key, value in dicts.items():
                 if key == "{}.{}".format(arg[0], arg[1]):
                     print(value)
-                    return 
+                    return
             print ("** instance id missing **")
-                
+
     def do_destory(self,line):
         arg = check_args(line)
         if arg:
@@ -96,18 +96,18 @@ class HBNBCommand(cmd.Cmd):
             if key in dicts.keys():
                del storage.all()[key]
                storage.save()
-               return 
+               return
             print ("** instance id missing **")
-            
+
     def do_all(self, line):
         arg = parse(line)
         rect = []
         if len(arg) == 0:
             for i in storage.all():
                 rect.append(str(storage.all()[i]))
-        
-            print(rect)            
-        
+
+            print(rect)
+
         else:
             key = arg[0]
             ret = []
@@ -116,26 +116,26 @@ class HBNBCommand(cmd.Cmd):
                 splt = keys.split(".")
                 if splt[0] == key:
                     ret.append(str(storage.all()[keys]))
-                   
-            
+
+
             if bool(ret) == False:
                 print ("** class doesn't exist **")
             else:
-                print(ret) 
-                
+                print(ret)
+
     def do_update(self,line):
         arg = check_args(line)
         updated = eval(arg[0]())
         updated.arg[1] = arg[2]
         print(arg)
-        
-    
+
+
     def emptyline(self):
         """
             does nothing when an empty line is enterd
         """
         pass
-        
+
     def do_quit(self, line):
         """
         DESCRIPTION:
@@ -146,7 +146,7 @@ class HBNBCommand(cmd.Cmd):
             BOL: True
         """
         return True
-    
+
     def do_EOF(self, line):
         """
         DESCRIPTION:
@@ -157,10 +157,10 @@ class HBNBCommand(cmd.Cmd):
             BOL: True
         """
         return True
-    
-    
-    
-    
-    
+
+
+
+
+
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
