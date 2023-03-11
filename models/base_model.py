@@ -7,16 +7,14 @@ import datetime as dt
 import models
 
 
-
-
 class BaseModel():
-    
+
     id = None
     created_at = None
     updated_at = None
-    
+
     def __init__(self, *args, **kwargs) -> None:
-        
+
         if (kwargs):
             for key, value in kwargs.items():
                 tform = "%Y-%m-%dT%H:%M:%S.%f"
@@ -28,23 +26,21 @@ class BaseModel():
                 setattr(self, key, value)
         else:
             self.id = str(uuid.uuid4())
-            self.created_at =  dt.datetime.now()
-            self.updated_at =  dt.datetime.now()
+            self.created_at = dt.datetime.now()#31.30
+            self.updated_at = dt.datetime.now()#32.30
             models.storage.new(self)
 
-            
-                
-    
-    def __str__(self):
+
+    def __str__(self):#38.1
         
-        return ("[{}] ({}) {}".format(self.__class__.__name__, self.id, self.__dict__))
-    
+        return ("[{}] ({}) {}".format(self.__class__.__name__, self.id, self.__dict__))#40.80
+
     def save(self):
         self.updated_at = dt.datetime.now()
         models.storage.save()
-        
+
     def to_dict(self):
-        
+
         rdict = self.__dict__.copy()
         rdict["__class__"] = self.__class__.__name__
         rdict["updated_at"] = self.updated_at.isoformat()
