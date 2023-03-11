@@ -30,7 +30,6 @@ class BaseModel():
             self.updated_at = dt.datetime.now()
             models.storage.new(self)
 
-
     def __str__(self):
         
         return ("[{}] ({}) {}".format(self.__class__.__name__, self.id, self.__dict__))#40.80
