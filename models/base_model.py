@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 import sys
-sys.path.append('C:/Users/kshed/OneDrive/Desktop/programming/AirBnB_clone')
 import uuid
 import datetime as dt
 import models
+sys.path.append('C:/Users/kshed/OneDrive/Desktop/programming/AirBnB_clone')
 
 
 class BaseModel():
