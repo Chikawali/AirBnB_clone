@@ -26,12 +26,12 @@ class BaseModel():
                 setattr(self, key, value)
         else:
             self.id = str(uuid.uuid4())
-            self.created_at = dt.datetime.now()#31.30
-            self.updated_at = dt.datetime.now()#32.30
+            self.created_at = dt.datetime.now()
+            self.updated_at = dt.datetime.now()
             models.storage.new(self)
 
 
-    def __str__(self):#38.1
+    def __str__(self):
         
         return ("[{}] ({}) {}".format(self.__class__.__name__, self.id, self.__dict__))#40.80
 
