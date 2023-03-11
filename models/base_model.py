@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+"""A module that implements the BaseModel class"""
 import sys
 import uuid
 import datetime as dt
@@ -7,13 +8,18 @@ sys.path.append('C:/Users/kshed/OneDrive/Desktop/programming/AirBnB_clone')
 
 
 class BaseModel():
-
+    """Represents the BaseModel of the HBnB project."""
+    
     id = None
     created_at = None
     updated_at = None
 
     def __init__(self, *args, **kwargs) -> None:
-
+        """Initialize a new BaseModel.
+        Args:
+            *args (any): Unused.
+            **kwargs (dict): Key/value pairs of attributes.
+        """
         if (kwargs):
             for key, value in kwargs.items():
                 tform = "%Y-%m-%dT%H:%M:%S.%f"
@@ -30,6 +36,7 @@ class BaseModel():
             models.storage.new(self)
 
     def __str__(self):
+        """Return the print/str representation of the BaseModel instance."""
         cls = self.__class__.__name__
         idx = self.id
         dicts = self.__dict__
@@ -37,11 +44,15 @@ class BaseModel():
         return (string)
 
     def save(self):
+        """Update updated_at with the current datetime."""
         self.updated_at = dt.datetime.now()
         models.storage.save()
 
     def to_dict(self):
-
+        """Return the dictionary of the BaseModel instance.
+        Includes the key/value pair __class__ representing
+        the class name of the object.
+        """
         rdict = self.__dict__.copy()
         rdict["__class__"] = self.__class__.__name__
         rdict["updated_at"] = self.updated_at.isoformat()
