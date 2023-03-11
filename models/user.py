@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
-from models.basemodel import BaseModel
+import sys
+sys.path.append('C:/Users/kshed/OneDrive/Desktop/programming/AirBnB_clone/models')
+from base_model import BaseModel
 
 class User(BaseModel):
     """Represent a user.

@@ -5,10 +5,24 @@ import re
 from shlex import split
 sys.path.append('C:/Users/kshed/OneDrive/Desktop/programming/AirBnB_clone')
 from models.base_model import BaseModel
+from models.city import City
+from models.state import State
+from models.review import Review
+from models.place import Place
+from models.amenity import Amenity
 from models import storage
+from models.user import User
 
 
-classes = ['BaseModel']
+classes = [
+    "BaseModel",
+    "User",
+    "City",
+    "State",
+    "Review",
+    "Place",
+    "Amenity"
+    ]
 
 def parse(arg):
     curly_braces = re.search(r"\{(.*?)\}", arg)
@@ -34,14 +48,16 @@ def check_args(args):
     l = parse(args)
     if len(l) == 0:
         print ('** class name missing **')
-        return False
+        return (False)
     try:
         if l[0] not in classes:
             print("** class doesnt exist **")
-            return False
+            return (False)
     except IndexError:
-            pass
-    return (l)
+        pass
+    
+    else:
+        return (l)
 
 class HBNBCommand(cmd.Cmd):
     """console for the AIRBNB clone project
@@ -71,7 +87,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, line):
 
-        args = parse(line)
+        args = check_args(line)
 
         if args:
             print(eval(args[0])().id)
@@ -124,13 +140,33 @@ class HBNBCommand(cmd.Cmd):
             else:
                 print(ret)
 
-    def do_update(self,line):
+    def do_update(self, argv):
+            """Updates an instance based on the class name and id by adding or
+            updating attribute and save it to the JSON file."""
+            arg_list = check_args(argv)
+            if arg_list:
+                if len(arg_list) == 1:
+                    print("** instance id missing **")
+                else:
+                    instance_id = "{}.{}".format(arg_list[0], arg_list[1])
+                    if instance_id in storage.all():
+                        if len(arg_list) == 2:
+                            print("** attribute name missing **")
+                        elif len(arg_list) == 3:
+                            print("** value missing **")
+                        else:
+                            obj = storage.all()[instance_id]
+                            if arg_list[2] in type(obj).__dict__:
+                                v_type = type(obj.__class__.__dict__[arg_list[2]])
+                                setattr(obj, arg_list[2], v_type(arg_list[3]))
+                            else:
+                                setattr(obj, arg_list[2], arg_list[3])
+                    else:
+                        print("** no instance found **")
 
-        arg = check_args(line)
-        key = "{}.{}".format(arg[0], arg[1])
-        obj = storage.all().get(key)
-        obj._dict_[arg[2]] = arg[3]
-        storage.save()
+                storage.save()
+            
+
 
     def emptyline(self):
         """
