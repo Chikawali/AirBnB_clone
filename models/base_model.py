@@ -33,7 +33,7 @@ class BaseModel():
         cls = self.__class__.__name__
         idx = self.id
         dicts = self.__dict__
-        string ="[{}] ({}) {}".format(cls, idx, dicts)
+        string = "[{}] ({}) {}".format(cls, idx, dicts)
         return (string)
 
     def save(self):
