@@ -47,4 +47,3 @@ class BaseModel():
         rdict["created_at"] = self.created_at.isoformat()
 
         return rdict
-    
