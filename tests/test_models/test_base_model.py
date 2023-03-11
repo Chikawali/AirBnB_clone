@@ -6,6 +6,8 @@ Unittest classes:
     TestBaseModel_save
     TestBaseModel_to_dict
 """
+import sys
+sys.path.append('C:/Users/kshed/OneDrive/Desktop/programming/AirBnB_clone')
 import os
 import models
 import unittest
