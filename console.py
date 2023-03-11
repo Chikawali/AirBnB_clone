@@ -124,11 +124,18 @@ class HBNBCommand(cmd.Cmd):
                 print(ret)
 
     def do_update(self,line):
+
         arg = check_args(line)
         updated = eval(arg[0]())
         updated.arg[1] = arg[2]
         print(arg)
 
+
+            arg = check_args(line)
+            key = "{}.{}".format(arg[0], arg[1])
+            obj = storage.all().get(key)
+            obj._dict_[arg[2]] = arg[3]
+            storage.save()
 
     def emptyline(self):
         """
